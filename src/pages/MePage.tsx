@@ -1,6 +1,14 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export function MePage() {
+  const [toast, setToast] = useState<string | null>(null)
+
+  function teaseLogin() {
+    setToast('想玩更多？登录后可发帖同步／收藏（即将开放）')
+    setTimeout(() => setToast(null), 2400)
+  }
+
   return (
     <div className="page">
       <h2 className="section-title">我的</h2>
@@ -12,18 +20,32 @@ export function MePage() {
         </div>
       </div>
 
+      <div className="login-cta-card">
+        <div>
+          <strong>想玩更多？</strong>
+          <p>登录后可发帖同步／收藏同参与投票（即将开放）</p>
+        </div>
+        <div className="login-cta-actions">
+          <button type="button" className="btn primary" onClick={teaseLogin}>
+            登录（即将）
+          </button>
+          <Link to="/" className="btn ghost">
+            去首页逛逛
+          </Link>
+        </div>
+      </div>
+
       <div className="mono-box ops-today">
         <h3>今日动作</h3>
         <ul className="ops-tips" style={{ listStyle: 'disc', paddingLeft: 18 }}>
           <li>
-            <strong>发帖</strong>：首页「＋ 发帖」或按 OPS 题材日历写 1 篇
+            <strong>发帖</strong>：首页「＋ 发帖」写 1 篇新鲜生活／饮食／海旁
           </li>
           <li>
-            <strong>联系名单店</strong>：跟{' '}
-            <code>docs/MERCHANT_OUTREACH_WEEK1.md</code> 打／WA 至少 1–3 间
+            <strong>逛新鲜</strong>：首页「今日新鲜」跳转日落／宵夜／投票贴
           </li>
           <li>
-            送链接：费率 <Link to="/rates">#/rates</Link> ·{' '}
+            商户合作（可选）：费率 <Link to="/rates">#/rates</Link> ·{' '}
             <Link to="/why-us">点解选我们</Link>
           </li>
         </ul>
@@ -90,6 +112,8 @@ export function MePage() {
           <li>scripts/video-prompts/ — 口播稿与提示词</li>
         </ul>
       </div>
+
+      {toast && <div className="toast">{toast}</div>}
     </div>
   )
 }

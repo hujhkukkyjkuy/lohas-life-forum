@@ -20,6 +20,7 @@ export function ComposeSheet({ open, onClose, onSubmit }: Props) {
         <div className="sheet-handle" />
         <h2>发帖</h2>
         <p className="hint">本地示范 · 不会上传服务器 · 刷新后消失</p>
+        <p className="hint login-hint">🔐 登录后可同步发帖同收藏（即将开放）</p>
         <div className="field">
           <label>分类</label>
           <select value={category} onChange={(e) => setCategory(e.target.value as Category)}>
@@ -44,7 +45,7 @@ export function ComposeSheet({ open, onClose, onSubmit }: Props) {
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            placeholder="写点邻居会感兴趣的事…"
+            placeholder="写点邻居会感兴趣的事… 可加「留言你嘅答案」"
           />
         </div>
         <div className="sheet-actions">

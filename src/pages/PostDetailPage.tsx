@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getPostById } from '../data/posts'
+import { getDemoComments } from '../data/comments'
 
 const styleLabel = {
   xiaohongshu: '小红书风',
@@ -8,10 +9,42 @@ const styleLabel = {
   facebook: 'Facebook 社区风',
 } as const
 
+const LIKES_KEY = 'lohas-life-liked-posts'
+
+function loadLiked(): Set<string> {
+  try {
+    const raw = localStorage.getItem(LIKES_KEY)
+    if (!raw) return new Set()
+    const arr = JSON.parse(raw) as string[]
+    return new Set(Array.isArray(arr) ? arr : [])
+  } catch {
+    return new Set()
+  }
+}
+
+function saveLiked(set: Set<string>) {
+  localStorage.setItem(LIKES_KEY, JSON.stringify([...set]))
+}
+
 export function PostDetailPage() {
   const { id } = useParams()
   const post = id ? getPostById(id) : undefined
   const [copied, setCopied] = useState(false)
+  const [liked, setLiked] = useState(false)
+  const [likeBoost, setLikeBoost] = useState(0)
+  const [toast, setToast] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!post) return
+    const set = loadLiked()
+    setLiked(set.has(post.id))
+    setLikeBoost(set.has(post.id) ? 1 : 0)
+  }, [post?.id])
+
+  const comments = useMemo(() => {
+    if (!post) return []
+    return getDemoComments(post.id, post.category)
+  }, [post])
 
   if (!post) {
     return (
@@ -37,6 +70,23 @@ export function PostDetailPage() {
     } catch {
       window.prompt('请手动复制以下链接：', url)
     }
+  }
+
+  function toggleLike() {
+    const pid = post!.id
+    const set = loadLiked()
+    if (set.has(pid)) {
+      set.delete(pid)
+      setLiked(false)
+      setLikeBoost(0)
+    } else {
+      set.add(pid)
+      setLiked(true)
+      setLikeBoost(1)
+      setToast('已点赞（存本机）· 登录后可同步收藏')
+      setTimeout(() => setToast(null), 2200)
+    }
+    saveLiked(set)
   }
 
   return (
@@ -83,7 +133,9 @@ export function PostDetailPage() {
                       ? `${import.meta.env.BASE_URL}videos/poster-food.png`
                       : videoUrl.includes('water')
                         ? `${import.meta.env.BASE_URL}videos/poster-water.png`
-                        : undefined
+                        : videoUrl.includes('clinic')
+                          ? `${import.meta.env.BASE_URL}videos/poster-clinic.png`
+                          : undefined
                   }
                   className="video-player"
                   src={videoUrl}
@@ -119,8 +171,10 @@ export function PostDetailPage() {
           ))}
         </div>
         <div className="post-stats" style={{ marginTop: 16 }}>
-          <span>♥ {post.likes}</span>
-          <span>💬 {post.commentsCount}</span>
+          <button type="button" className={`like-btn${liked ? ' on' : ''}`} onClick={toggleLike}>
+            {liked ? '♥' : '♡'} {post.likes + likeBoost}
+          </button>
+          <span>💬 {Math.max(post.commentsCount, comments.length)}</span>
         </div>
 
         <div className="share-row">
@@ -129,7 +183,36 @@ export function PostDetailPage() {
           </button>
           <p className="share-hint">公开链接可转发出群 · 唔似封闭群难分享</p>
         </div>
+
+        <section className="comments-section">
+          <h3 className="comments-title">评论 · 示范 {comments.length}</h3>
+          <p className="comments-hint">登录后可留言同参与投票（即将开放）</p>
+          <ul className="comments-list">
+            {comments.map((c) => (
+              <li key={c.id} className="comment-item">
+                <div className="avatar">{c.avatar}</div>
+                <div className="comment-body">
+                  <div className="comment-meta">
+                    <strong>{c.author}</strong>
+                    <span>
+                      {new Date(c.createdAt).toLocaleString('zh-HK', {
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'Asia/Shanghai',
+                      })}
+                    </span>
+                  </div>
+                  <p>{c.text}</p>
+                  <span className="comment-likes">♥ {c.likes}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
+      {toast && <div className="toast">{toast}</div>}
     </>
   )
 }
