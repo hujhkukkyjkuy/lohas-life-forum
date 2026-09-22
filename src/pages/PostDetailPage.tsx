@@ -56,14 +56,29 @@ export function PostDetailPage() {
               <span style={{ fontSize: 11, color: '#94a3b8' }}>Demo clip</span>
             </div>
             {videoUrl ? (
-              <video
-                controls
-                playsInline
-                preload="metadata"
-                poster=""
-                style={{ width: '100%', borderRadius: 12, background: '#020617' }}
-                src={videoUrl}
-              />
+              <div className="video-frame">
+                <video
+                  key={videoUrl}
+                  controls
+                  playsInline
+                  muted
+                  autoPlay
+                  loop
+                  preload="auto"
+                  poster={
+                    videoUrl.includes('food')
+                      ? `${import.meta.env.BASE_URL}videos/poster-food.png`
+                      : videoUrl.includes('water')
+                        ? `${import.meta.env.BASE_URL}videos/poster-water.png`
+                        : undefined
+                  }
+                  className="video-player"
+                  src={videoUrl}
+                >
+                  你的浏览器暂时播唔到呢条短视频。
+                </video>
+                <p className="video-hint">若未自动播放，请点一下 ▶ 播放（示范片 · 无声）</p>
+              </div>
             ) : (
               <div style={{ padding: 24, textAlign: 'center', color: '#94a3b8' }}>播放占位</div>
             )}
