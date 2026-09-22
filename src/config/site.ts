@@ -3,7 +3,7 @@
  * CONTACT_WHATSAPP：國際格式，唔好加 + 或空格，例如 85291234567
  * 留空 → UI 顯示「請先設定聯絡 WhatsApp」並提供可複製詢價文案
  */
-export const CONTACT_WHATSAPP = '' // 待填 · e.g. '85291234567'
+export const CONTACT_WHATSAPP = '85244361681'
 
 export const SITE_NAME = '康城生活圈'
 export const SITE_TAGLINE = 'Lohas Life · LOHAS Park'
