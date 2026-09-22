@@ -31,7 +31,14 @@
 
 论坛：https://hujhkukkyjkuy.github.io/lohas-life-forum/
 费率：https://hujhkukkyjkuy.github.io/lohas-life-forum/#/rates
+点解选我们：https://hujhkukkyjkuy.github.io/lohas-life-forum/#/why-us
 站长 WhatsApp：44361681
+
+## 竞品一句（开口可加）
+
+> 「Facebook／Telegram 群好多时禁广告、又要审批；我哋系公开康城生活圈，有费率页，欢迎试投一周——链接可以转发出圈。」
+
+完整作战节奏见 `docs/MONEY_BATTLE_PLAN.md`。
 
 ## 目标
 

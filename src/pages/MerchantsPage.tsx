@@ -29,6 +29,9 @@ export function MerchantsPage() {
         <Link to="/rates" className="rates-link">
           查看完整价目表 →
         </Link>
+        <Link to="/why-us" className="rates-link">
+          点解选我们而唔系 FB／TG 群 →
+        </Link>
       </div>
 
       {featuredMerchants.map((m) => (

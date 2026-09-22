@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { PostCard } from '../components/PostCard'
 import { AdSlot } from '../components/AdSlot'
 import { ComposeSheet } from '../components/ComposeSheet'
 import { posts as seedPosts, type Category, type Post } from '../data/posts'
 import { nativeAdPlaceholders } from '../data/merchants'
+import { SITE_TAGLINE } from '../config/site'
 
 const chips: Array<Category | '全部' | '短视频'> = [
   '全部',
@@ -45,7 +47,7 @@ export function HomePage() {
             <div className="brand-mark">🏝</div>
             <div>
               <h1>康城生活圈</h1>
-              <p>Lohas Life · LOHAS Park</p>
+              <p>{SITE_TAGLINE}</p>
             </div>
           </div>
           <button type="button" className="compose-btn" onClick={() => setComposeOpen(true)}>
@@ -55,6 +57,11 @@ export function HomePage() {
       </header>
 
       <div className="banner-demo">示范社区 · 内容由 AI 生成示意 · 非官方屋苑频道</div>
+
+      <Link to="/why-us" className="diff-banner">
+        <strong>公开康城生活圈 · 欢迎商户试投</strong>
+        <span>（唔似 FB 群禁广告）· 点解选我们 →</span>
+      </Link>
 
       <div className="chips">
         {chips.map((c) => (

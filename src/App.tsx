@@ -6,6 +6,7 @@ import { CategoriesPage } from './pages/CategoriesPage'
 import { MerchantsPage } from './pages/MerchantsPage'
 import { MePage } from './pages/MePage'
 import { RatesPage } from './pages/RatesPage'
+import { WhyUsPage } from './pages/WhyUsPage'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/merchants" element={<MerchantsPage />} />
           <Route path="/rates" element={<RatesPage />} />
+          <Route path="/why-us" element={<WhyUsPage />} />
           <Route path="/me" element={<MePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

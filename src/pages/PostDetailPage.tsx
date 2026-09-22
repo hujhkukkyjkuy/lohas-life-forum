@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getPostById } from '../data/posts'
 
@@ -10,6 +11,7 @@ const styleLabel = {
 export function PostDetailPage() {
   const { id } = useParams()
   const post = id ? getPostById(id) : undefined
+  const [copied, setCopied] = useState(false)
 
   if (!post) {
     return (
@@ -25,6 +27,17 @@ export function PostDetailPage() {
   const videoUrl = post.videoSrc
     ? `${import.meta.env.BASE_URL}${post.videoSrc}`
     : undefined
+
+  async function copyPostLink() {
+    const url = `${window.location.origin}${window.location.pathname}#/post/${post!.id}`
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      window.prompt('请手动复制以下链接：', url)
+    }
+  }
 
   return (
     <>
@@ -108,6 +121,13 @@ export function PostDetailPage() {
         <div className="post-stats" style={{ marginTop: 16 }}>
           <span>♥ {post.likes}</span>
           <span>💬 {post.commentsCount}</span>
+        </div>
+
+        <div className="share-row">
+          <button type="button" className="btn ghost cta-btn" onClick={copyPostLink}>
+            {copied ? '已复制链接 ✓' : '🔗 复制链接'}
+          </button>
+          <p className="share-hint">公开链接可转发出群 · 唔似封闭群难分享</p>
         </div>
       </div>
     </>
