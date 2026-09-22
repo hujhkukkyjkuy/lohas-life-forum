@@ -5,6 +5,7 @@ import { PostDetailPage } from './pages/PostDetailPage'
 import { CategoriesPage } from './pages/CategoriesPage'
 import { MerchantsPage } from './pages/MerchantsPage'
 import { MePage } from './pages/MePage'
+import { RatesPage } from './pages/RatesPage'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/post/:id" element={<PostDetailPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/merchants" element={<MerchantsPage />} />
+          <Route path="/rates" element={<RatesPage />} />
           <Route path="/me" element={<MePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

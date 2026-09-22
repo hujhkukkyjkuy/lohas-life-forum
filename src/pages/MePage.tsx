@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export function MePage() {
   return (
     <div className="page">
@@ -8,6 +10,37 @@ export function MePage() {
           <h3>康城访客（示范）</h3>
           <p>未接登录 · MVP 本地预览</p>
         </div>
+      </div>
+
+      <div className="mono-box ops-entry">
+        <h3>站长运营入口</h3>
+        <p className="ops-lead">畀建峰用 · 收首 5 个商户同跟进试投</p>
+        <Link to="/rates" className="ops-link-card">
+          <span className="ops-icon">💰</span>
+          <span>
+            <strong>合作价目 /rates</strong>
+            <small>示范价 · 可议 · 含询价 CTA</small>
+          </span>
+        </Link>
+        <Link to="/merchants" className="ops-link-card">
+          <span className="ops-icon">🏪</span>
+          <span>
+            <strong>商户页 · 留下电话</strong>
+            <small>Lead form 存 localStorage</small>
+          </span>
+        </Link>
+
+        <h4 className="ops-h4">点攞首 5 个商户（新手）</h4>
+        <ol className="ops-tips">
+          <li>行 The LOHAS／海旁 Cafe，自我介绍「康城生活圈」本地信息流。</li>
+          <li>开价用「试投一周」：信息流 HK$800 起或置顶 HK$1,200 起（可议）。</li>
+          <li>当场复制询价文案 → 贴 WhatsApp；或叫对方填「留下电话」表单。</li>
+          <li>出稿后截图曝光位 + 简单数据（浏览／赞）做证言。</li>
+          <li>目标：两周内签 3–5 家，先换案例再加价。</li>
+        </ol>
+        <p className="ops-foot">
+          上线前清单见 <code>docs/LAUNCH_CHECKLIST.md</code>
+        </p>
       </div>
 
       <div className="mono-box">
@@ -25,6 +58,7 @@ export function MePage() {
         <ul>
           <li>PRODUCT.md — 产品定位与 MVP 范围</li>
           <li>MONETIZATION.md — 变现与价目</li>
+          <li>docs/LAUNCH_CHECKLIST.md — 上线清单</li>
           <li>docs/OPS_PLAYBOOK.md — 每周操作手册</li>
           <li>docs/VIDEO_PLAYBOOK.md — AI 短视频制作</li>
           <li>scripts/video-prompts/ — 口播稿与提示词</li>
