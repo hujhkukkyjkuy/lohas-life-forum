@@ -1,4 +1,7 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
+import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { trackPageview } from './lib/analytics'
+import { StatsPage } from './pages/StatsPage'
 import { BottomTabs } from './components/BottomTabs'
 import { HomePage } from './pages/HomePage'
 import { PostDetailPage } from './pages/PostDetailPage'
@@ -8,9 +11,18 @@ import { MePage } from './pages/MePage'
 import { RatesPage } from './pages/RatesPage'
 import { WhyUsPage } from './pages/WhyUsPage'
 
+function RouteTracker() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    trackPageview(pathname)
+  }, [pathname])
+  return null
+}
+
 export default function App() {
   return (
     <HashRouter>
+      <RouteTracker />
       <div className="app-shell">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -20,6 +32,7 @@ export default function App() {
           <Route path="/rates" element={<RatesPage />} />
           <Route path="/why-us" element={<WhyUsPage />} />
           <Route path="/me" element={<MePage />} />
+          <Route path="/stats" element={<StatsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <BottomTabs />

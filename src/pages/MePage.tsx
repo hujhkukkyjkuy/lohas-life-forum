@@ -110,6 +110,10 @@ export function MePage() {
           <li>docs/OPS_PLAYBOOK.md — 每周操作手册</li>
           <li>docs/VIDEO_PLAYBOOK.md — AI 短视频制作</li>
           <li>scripts/video-prompts/ — 口播稿与提示词</li>
+          <li>
+            <Link to="/stats">#/stats — 訪客統計（來源 fb／tg／xhs、每帖瀏覽、WhatsApp 點擊）</Link>
+          </li>
+          <li>docs/social/ — 每日群組分享帖</li>
         </ul>
       </div>
 

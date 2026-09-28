@@ -4,6 +4,7 @@ import {
   buildInquiryText,
   whatsappUrl,
 } from '../config/site'
+import { trackEvent } from '../lib/analytics'
 
 type Props = {
   compact?: boolean
@@ -19,6 +20,7 @@ export function MerchantCtaButtons({ compact, contextLabel }: Props) {
   const hasWa = Boolean(CONTACT_WHATSAPP.trim())
 
   async function copyText() {
+    trackEvent('copy_inquiry')
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
@@ -37,6 +39,7 @@ export function MerchantCtaButtons({ compact, contextLabel }: Props) {
           href={wa}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackEvent('wa_click', contextLabel ? 'ctx' : 'main')}
         >
           WhatsApp 询价试投
         </a>
