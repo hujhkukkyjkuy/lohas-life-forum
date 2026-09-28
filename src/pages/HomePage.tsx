@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { PostCard } from '../components/PostCard'
 import { AdSlot } from '../components/AdSlot'
 import { ComposeSheet } from '../components/ComposeSheet'
+import { WeatherStrip } from '../components/WeatherStrip'
 import { posts as seedPosts, type Category, type Post } from '../data/posts'
 import { nativeAdPlaceholders } from '../data/merchants'
 import { SITE_TAGLINE } from '../config/site'
@@ -75,6 +76,8 @@ export function HomePage() {
           </button>
         </div>
       </header>
+
+      <WeatherStrip />
 
       <div className="banner-demo">示范社区 · 内容由 AI 生成示意 · 非官方屋苑频道</div>
 
