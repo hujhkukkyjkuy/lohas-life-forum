@@ -188,6 +188,7 @@ export async function getCount(key: string): Promise<number> {
   try {
     const r = await fetch(`${ABACUS_BASE}/get/${ABACUS_NS}/${toKey(key)}`, { credentials: 'omit' })
     if (r.status === 404) return 0
+    if (r.status === 429) return -429
     if (!r.ok) return -1
     const j = (await r.json()) as { value?: number }
     return typeof j.value === 'number' ? j.value : 0

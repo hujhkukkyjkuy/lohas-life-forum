@@ -15,9 +15,14 @@ async function loadRows(rows: Row[], onUpdate: (rows: Row[]) => void, cancelled:
   const out = rows.map((r) => ({ ...r }))
   for (let i = 0; i < out.length; i++) {
     if (cancelled()) return
-    out[i].value = await getCount(out[i].key)
+    let v = await getCount(out[i].key)
+    for (let tries = 0; v === -429 && tries < 4 && !cancelled(); tries++) {
+      await sleep(4000) // 撞到限速就等一陣再試
+      v = await getCount(out[i].key)
+    }
+    out[i].value = v
     onUpdate(out.map((r) => ({ ...r })))
-    await sleep(380)
+    await sleep(450)
   }
 }
 
@@ -99,7 +104,7 @@ export function StatsPage() {
         <Table title="每頁／每帖瀏覽（累計）" rows={postRows} sort />
       ) : (
         <button type="button" className="btn ghost" onClick={loadPosts}>
-          載入每頁／每帖瀏覽（約 20 秒）
+          載入每頁／每帖瀏覽（約 30 秒）
         </button>
       )}
       <p style={{ fontSize: 12, color: '#64748b', marginTop: 12 }}>
