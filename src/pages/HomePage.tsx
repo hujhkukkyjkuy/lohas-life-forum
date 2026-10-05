@@ -17,11 +17,9 @@ const chips: Array<Category | '全部' | '短视频'> = [
   '休闲海旁',
 ]
 
-const FRESH_JUMPS = [
-  { id: 'p23', label: '🌅 海旁日落' },
-  { id: 'p22', label: '🍜 宵夜清单' },
-  { id: 'p24', label: '🗳️ 投票贴' },
-] as const
+function hkDay(iso: string): string {
+  return new Date(new Date(iso).getTime() + 8 * 3600 * 1000).toISOString().slice(0, 10)
+}
 
 export function HomePage() {
   const [filter, setFilter] = useState<(typeof chips)[number]>('全部')
@@ -31,13 +29,17 @@ export function HomePage() {
 
   const all = useMemo(() => [...localPosts, ...seedPosts], [localPosts])
 
-  const freshCount = useMemo(() => {
-    const start = new Date('2026-09-20T00:00:00+08:00').getTime()
-    return all.filter((p) => new Date(p.createdAt).getTime() >= start).length
+  // 按發帖時間排（唔再用示範讚數排「熱門」）
+  const latestPosts = useMemo(() => {
+    return [...all]
+      .filter((p) => !p.id.startsWith('local-'))
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 3)
   }, [all])
 
-  const hotPosts = useMemo(() => {
-    return [...all].sort((a, b) => b.likes - a.likes).slice(0, 3)
+  const freshCount = useMemo(() => {
+    const todayHk = hkDay(new Date().toISOString())
+    return all.filter((p) => hkDay(p.createdAt) === todayHk).length
   }, [all])
 
   const filtered = useMemo(() => {
@@ -83,18 +85,16 @@ export function HomePage() {
 
       <div className="fresh-strip">
         <div className="fresh-strip-head">
-          <strong>今日新鲜</strong>
-          <span>
-            今日 +{freshCount} 篇新帖 · 海旁日落／宵夜清单／投票贴
-          </span>
+          <strong>今日問題</strong>
+          <span>{freshCount > 0 ? `今日 +${freshCount} 篇新帖 · 答案喺帖入面` : '最新一條問題 · 答案喺帖入面'}</span>
         </div>
-        <div className="fresh-jumps">
-          {FRESH_JUMPS.map((j) => (
-            <Link key={j.id} to={`/post/${j.id}`} className="fresh-chip">
-              {j.label}
+        {latestPosts[0] && (
+          <div className="fresh-jumps">
+            <Link to={`/post/${latestPosts[0].id}`} className="fresh-chip">
+              {latestPosts[0].coverEmoji} {latestPosts[0].title}
             </Link>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
 
       <Link to="/why-us" className="diff-banner soft">
@@ -127,20 +127,19 @@ export function HomePage() {
       </div>
 
       {filter === '全部' && (
-        <section className="hot-section" aria-label="热门">
+        <section className="hot-section" aria-label="最新">
           <div className="hot-head">
-            <strong>🔥 热门 Trending</strong>
-            <span>按赞数 Top 3</span>
+            <strong>🆕 最新帖</strong>
+            <span>按發帖時間</span>
           </div>
           <div className="hot-list">
-            {hotPosts.map((p, i) => (
+            {latestPosts.map((p, i) => (
               <Link key={p.id} to={`/post/${p.id}`} className="hot-item">
                 <span className="hot-rank">{i + 1}</span>
                 <span className="hot-title">
                   {p.mediaType === 'video' ? '🎬 ' : ''}
                   {p.title}
                 </span>
-                <span className="hot-likes">♥ {p.likes}</span>
               </Link>
             ))}
           </div>
