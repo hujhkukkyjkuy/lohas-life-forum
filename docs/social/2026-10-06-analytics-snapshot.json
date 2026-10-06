@@ -1,0 +1,25 @@
+{
+  "visits_total": {
+    "value": 6
+  },
+  "pv_total": {
+    "value": 7
+  },
+  "d20261006_visits": "HTTP Error 404: Not Found",
+  "d20261006_pv": "HTTP Error 404: Not Found",
+  "d20261005_visits": "HTTP Error 404: Not Found",
+  "src_fb": {
+    "value": 6
+  },
+  "src_tg": "HTTP Error 404: Not Found",
+  "src_other": {
+    "value": 1
+  },
+  "src_direct": "HTTP Error 404: Not Found",
+  "src_wa": "HTTP Error 404: Not Found",
+  "evt_wa_click": "HTTP Error 404: Not Found",
+  "evt_copy_inquiry": "HTTP Error 404: Not Found",
+  "pv_post_p50": "HTTP Error 404: Not Found",
+  "pv_post_p51": "HTTP Error 404: Not Found",
+  "fetched_at": "2026-10-06T10:03:11+08:00"
+}
