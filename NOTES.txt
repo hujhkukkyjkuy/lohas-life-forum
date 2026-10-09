@@ -1,0 +1,3 @@
+Live site https://hujhkukkyjkuy.github.io/lohas-life-forum/ is a Vite React SPA shell (root mount + hashed assets). Local repo already had lifestyle feed, merchants tab, compose without compliance checkbox, and fake-like UI on detail.
+Local polished demo is demo.html (self-contained). Added ForumList with chips that filter, 10 增长 seed posts (likes omitted / 0), TagPill, detail with replies, in-memory compose with required checkbox and contact-info block, glass warn + official strip + product line.
+No WhatsApp merchant CTA, no mock login, no deploy to yizu.grok.me. Screenshot: shot.png of forum list.
