@@ -2,6 +2,16 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getPostById } from '../data/posts'
 import { getDemoComments } from '../data/comments'
+import {
+  addReply,
+  isQuestionPost,
+  loadReplies,
+  loadVote,
+  loadVoteCounts,
+  parseVoteOptions,
+  saveVote,
+  type LocalReply,
+} from '../lib/localPosts'
 
 const styleLabel = {
   xiaohongshu: '小红书风',
@@ -33,12 +43,19 @@ export function PostDetailPage() {
   const [liked, setLiked] = useState(false)
   const [likeBoost, setLikeBoost] = useState(0)
   const [toast, setToast] = useState<string | null>(null)
+  const [vote, setVote] = useState<'A' | 'B' | 'C' | null>(null)
+  const [counts, setCounts] = useState({ A: 0, B: 0, C: 0 })
+  const [replies, setReplies] = useState<LocalReply[]>([])
+  const [replyText, setReplyText] = useState('')
 
   useEffect(() => {
     if (!post) return
     const set = loadLiked()
     setLiked(set.has(post.id))
     setLikeBoost(set.has(post.id) ? 1 : 0)
+    setVote(loadVote(post.id))
+    setCounts(loadVoteCounts(post.id))
+    setReplies(loadReplies(post.id))
   }, [post?.id])
 
   const comments = useMemo(() => {
@@ -46,9 +63,12 @@ export function PostDetailPage() {
     return getDemoComments(post.id, post.category)
   }, [post])
 
+  const voteOpts = useMemo(() => (post ? parseVoteOptions(post) : []), [post])
+  const showVote = post ? isQuestionPost(post) : false
+
   if (!post) {
     return (
-      <div className="page">
+      <div className="page forum-detail">
         <Link to="/" className="back-btn" style={{ display: 'inline-grid', placeItems: 'center' }}>
           ←
         </Link>
@@ -83,14 +103,32 @@ export function PostDetailPage() {
       set.add(pid)
       setLiked(true)
       setLikeBoost(1)
-      setToast('已点赞（存本机）· 登录后可同步收藏')
+      setToast('已点赞（存本机）· 登录后可同步收藏（即将）')
       setTimeout(() => setToast(null), 2200)
     }
     saveLiked(set)
   }
 
+  function onVote(choice: 'A' | 'B' | 'C') {
+    saveVote(post!.id, choice)
+    setVote(choice)
+    setCounts(loadVoteCounts(post!.id))
+    setToast('已投票（存本机）· 登录后可同步（即将）')
+    setTimeout(() => setToast(null), 2000)
+  }
+
+  function submitReply() {
+    const t = replyText.trim()
+    if (!t) return
+    const list = addReply(post!.id, t)
+    setReplies(list)
+    setReplyText('')
+    setToast('已回复（存本机）· 登录后可同步（即将）')
+    setTimeout(() => setToast(null), 2000)
+  }
+
   return (
-    <>
+    <div className="forum-detail">
       <div className="detail-header">
         <Link to="/" className="back-btn" style={{ display: 'grid', placeItems: 'center' }}>
           ←
@@ -128,15 +166,6 @@ export function PostDetailPage() {
                   autoPlay
                   loop
                   preload="auto"
-                  poster={
-                    videoUrl.includes('food')
-                      ? `${import.meta.env.BASE_URL}videos/poster-food.png`
-                      : videoUrl.includes('water')
-                        ? `${import.meta.env.BASE_URL}videos/poster-water.png`
-                        : videoUrl.includes('clinic')
-                          ? `${import.meta.env.BASE_URL}videos/poster-clinic.png`
-                          : undefined
-                  }
                   className="video-player"
                   src={videoUrl}
                 >
@@ -147,17 +176,11 @@ export function PostDetailPage() {
             ) : (
               <div style={{ padding: 24, textAlign: 'center', color: '#94a3b8' }}>播放占位</div>
             )}
-            {post.videoScriptId && (
-              <p style={{ margin: '10px 0 0', fontSize: 12, color: '#94a3b8' }}>
-                口播稿／提示词：
-                <code style={{ color: '#5eead4' }}>scripts/video-prompts/{post.videoScriptId}.md</code>
-              </p>
-            )}
           </div>
         )}
 
         <h1>{post.title}</h1>
-        <p style={{ margin: '0 0 12px', fontSize: 12, color: '#64748b' }}>
+        <p style={{ margin: '0 0 12px', fontSize: 12, color: 'var(--muted)' }}>
           风格：{styleLabel[post.style]}
           {post.mediaType === 'video' ? ' · 含短视频' : ''}
         </p>
@@ -172,10 +195,31 @@ export function PostDetailPage() {
         </div>
         <div className="post-stats" style={{ marginTop: 16 }}>
           <button type="button" className={`like-btn${liked ? ' on' : ''}`} onClick={toggleLike}>
-            {liked ? '♥' : '♡'} {post.likes + likeBoost}
+            {liked ? '♥' : '♡'} {post.likes + likeBoost || '赞'}
           </button>
-          <span>💬 {Math.max(post.commentsCount, comments.length)}</span>
+          <span>💬 {Math.max(post.commentsCount, comments.length) + replies.length}</span>
         </div>
+
+        {showVote && (
+          <section className="vote-panel" aria-label="本机投票">
+            <h3 className="comments-title">投票（本机）</h3>
+            <p className="comments-hint">选 A / B / C · 存 localStorage · 登录后可同步（即将）</p>
+            <div className="vote-options">
+              {voteOpts.map((o) => (
+                <button
+                  key={o.key}
+                  type="button"
+                  className={`vote-btn${vote === o.key ? ' on' : ''}`}
+                  onClick={() => onVote(o.key)}
+                >
+                  <strong>{o.key}</strong>
+                  <span>{o.label}</span>
+                  {vote && <em>{counts[o.key]}</em>}
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="share-row">
           <button type="button" className="btn ghost cta-btn" onClick={copyPostLink}>
@@ -185,9 +229,40 @@ export function PostDetailPage() {
         </div>
 
         <section className="comments-section">
-          <h3 className="comments-title">评论 · 示范 {comments.length}</h3>
-          <p className="comments-hint">登录后可留言同参与投票（即将开放）</p>
-          <ul className="comments-list">
+          <h3 className="comments-title">回复</h3>
+          <p className="comments-hint">本机回复可先写 · 登录后可同步（即将）</p>
+          <div className="reply-box">
+            <textarea
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              placeholder="写一句邻居会讲嘅话…"
+              rows={3}
+            />
+            <button type="button" className="btn primary" onClick={submitReply}>
+              发送（本机）
+            </button>
+          </div>
+          <ul className="comments-list" style={{ marginTop: 14 }}>
+            {replies.map((c) => (
+              <li key={c.id} className="comment-item">
+                <div className="avatar">✍️</div>
+                <div className="comment-body">
+                  <div className="comment-meta">
+                    <strong>我（本机）</strong>
+                    <span>
+                      {new Date(c.createdAt).toLocaleString('zh-HK', {
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'Asia/Shanghai',
+                      })}
+                    </span>
+                  </div>
+                  <p>{c.text}</p>
+                </div>
+              </li>
+            ))}
             {comments.map((c) => (
               <li key={c.id} className="comment-item">
                 <div className="avatar">{c.avatar}</div>
@@ -213,6 +288,6 @@ export function PostDetailPage() {
         </section>
       </div>
       {toast && <div className="toast">{toast}</div>}
-    </>
+    </div>
   )
 }

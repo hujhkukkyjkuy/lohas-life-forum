@@ -1,12 +1,10 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { PostCard } from '../components/PostCard'
-import { AdSlot } from '../components/AdSlot'
-import { ComposeSheet } from '../components/ComposeSheet'
 import { WeatherStrip } from '../components/WeatherStrip'
 import { posts as seedPosts, type Category, type Post } from '../data/posts'
-import { nativeAdPlaceholders } from '../data/merchants'
 import { SITE_TAGLINE } from '../config/site'
+import { loadLocalPosts, isQuestionPost } from '../lib/localPosts'
 
 const chips: Array<Category | '全部' | '短视频'> = [
   '全部',
@@ -17,29 +15,37 @@ const chips: Array<Category | '全部' | '短视频'> = [
   '休闲海旁',
 ]
 
-function hkDay(iso: string): string {
-  return new Date(new Date(iso).getTime() + 8 * 3600 * 1000).toISOString().slice(0, 10)
+function isChip(v: string | null): v is (typeof chips)[number] {
+  return !!v && (chips as string[]).includes(v)
 }
 
 export function HomePage() {
-  const [filter, setFilter] = useState<(typeof chips)[number]>('全部')
+  const [params, setParams] = useSearchParams()
+  const rawCat = params.get('cat')
+  const filter: (typeof chips)[number] = isChip(rawCat) ? rawCat : '全部'
   const [localPosts, setLocalPosts] = useState<Post[]>([])
-  const [composeOpen, setComposeOpen] = useState(false)
-  const [toast, setToast] = useState<string | null>(null)
 
-  const all = useMemo(() => [...localPosts, ...seedPosts], [localPosts])
+  useEffect(() => {
+    setLocalPosts(loadLocalPosts())
+    const onStorage = () => setLocalPosts(loadLocalPosts())
+    window.addEventListener('lohas-local-posts', onStorage)
+    window.addEventListener('storage', onStorage)
+    return () => {
+      window.removeEventListener('lohas-local-posts', onStorage)
+      window.removeEventListener('storage', onStorage)
+    }
+  }, [])
 
-  // 按發帖時間排（唔再用示範讚數排「熱門」）
-  const latestPosts = useMemo(() => {
-    return [...all]
-      .filter((p) => !p.id.startsWith('local-'))
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .slice(0, 3)
-  }, [all])
+  const all = useMemo(
+    () =>
+      [...localPosts, ...seedPosts].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      ),
+    [localPosts],
+  )
 
-  const freshCount = useMemo(() => {
-    const todayHk = hkDay(new Date().toISOString())
-    return all.filter((p) => hkDay(p.createdAt) === todayHk).length
+  const todayQuestion = useMemo(() => {
+    return all.find((p) => isQuestionPost(p) && !p.id.startsWith('local-')) ?? all[0]
   }, [all])
 
   const filtered = useMemo(() => {
@@ -48,77 +54,57 @@ export function HomePage() {
     return all.filter((p) => p.category === filter)
   }, [all, filter])
 
-  const feedItems: Array<{ type: 'post'; post: Post } | { type: 'ad'; ad: (typeof nativeAdPlaceholders)[number] }> = []
-  filtered.forEach((post, i) => {
-    feedItems.push({ type: 'post', post })
-    if ((i + 1) % 4 === 0) {
-      const ad = nativeAdPlaceholders[(Math.floor(i / 4)) % nativeAdPlaceholders.length]
-      feedItems.push({ type: 'ad', ad })
+  function setFilter(c: (typeof chips)[number]) {
+    if (c === '全部') {
+      setParams({}, { replace: true })
+    } else {
+      setParams({ cat: c }, { replace: true })
     }
-  })
-
-  function showToast(msg: string) {
-    setToast(msg)
-    setTimeout(() => setToast(null), 2400)
   }
 
   return (
     <>
-      <header className="topbar">
+      <header className="forum-topbar">
         <div className="brand-row">
           <div className="brand">
             <div className="brand-mark">🏝</div>
             <div>
               <h1>康城生活圈</h1>
-              <p>{SITE_TAGLINE}</p>
+              <p className="forum-sub">{SITE_TAGLINE}</p>
             </div>
           </div>
-          <button type="button" className="compose-btn" onClick={() => setComposeOpen(true)}>
-            ＋ 发帖
-          </button>
         </div>
       </header>
 
-      <WeatherStrip />
+      <WeatherStrip compact />
 
-      <div className="banner-demo">示范社区 · 内容由 AI 生成示意 · 非官方屋苑频道</div>
+      <div className="forum-compliance" role="note">
+        <span className="dot" aria-hidden />
+        <span>示范社区 · 内容示意 · 非官方屋苑频道 · 答案喺帖入面睇</span>
+      </div>
 
-      <div className="fresh-strip">
-        <div className="fresh-strip-head">
-          <strong>今日問題</strong>
-          <span>{freshCount > 0 ? `今日 +${freshCount} 篇新帖 · 答案喺帖入面` : '最新一條問題 · 答案喺帖入面'}</span>
-        </div>
-        {latestPosts[0] && (
+      {todayQuestion && (
+        <section className="fresh-strip" aria-label="今日问题">
+          <div className="fresh-strip-head">
+            <strong>今日問題</strong>
+            <span>点入去睇答案 · 可本机投票</span>
+          </div>
           <div className="fresh-jumps">
-            <Link to={`/post/${latestPosts[0].id}`} className="fresh-chip">
-              {latestPosts[0].coverEmoji} {latestPosts[0].title}
+            <Link to={`/post/${todayQuestion.id}`} className="fresh-chip">
+              {todayQuestion.coverEmoji} {todayQuestion.title.replace(/^今日問題｜/, '')}
             </Link>
           </div>
-        )}
-      </div>
+        </section>
+      )}
 
-      <Link to="/why-us" className="diff-banner soft">
-        <strong>商户合作入口</strong>
-        <span>公开信息流试投（可选）· 点解选我们 →</span>
-      </Link>
-
-      <div className="login-tease" role="note">
-        <span>🔐 登录后可点赞收藏同参与投票（即将开放）</span>
-        <button
-          type="button"
-          className="login-tease-btn"
-          onClick={() => showToast('登录同步即将开放 · 而家可先本地发帖预览')}
-        >
-          了解
-        </button>
-      </div>
-
-      <div className="chips">
+      <div className="forum-chips" role="tablist" aria-label="分类">
         {chips.map((c) => (
           <button
             key={c}
             type="button"
-            className={`chip${filter === c ? ' active' : ''}`}
+            role="tab"
+            aria-selected={filter === c}
+            className={`forum-chip${filter === c ? ' active' : ''}`}
             onClick={() => setFilter(c)}
           >
             {c === '短视频' ? '🎬 短视频' : c}
@@ -126,65 +112,12 @@ export function HomePage() {
         ))}
       </div>
 
-      {filter === '全部' && (
-        <section className="hot-section" aria-label="最新">
-          <div className="hot-head">
-            <strong>🆕 最新帖</strong>
-            <span>按發帖時間</span>
-          </div>
-          <div className="hot-list">
-            {latestPosts.map((p, i) => (
-              <Link key={p.id} to={`/post/${p.id}`} className="hot-item">
-                <span className="hot-rank">{i + 1}</span>
-                <span className="hot-title">
-                  {p.mediaType === 'video' ? '🎬 ' : ''}
-                  {p.title}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <div className="feed">
-        {feedItems.length === 0 && <div className="empty">呢个分类暂时未有帖子</div>}
-        {feedItems.map((item, idx) =>
-          item.type === 'post' ? (
-            <PostCard key={item.post.id} post={item.post} />
-          ) : (
-            <AdSlot key={`ad-${idx}-${item.ad.id}`} ad={item.ad} />
-          ),
-        )}
+      <div className="forum-feed">
+        {filtered.length === 0 && <div className="empty">呢个分类暂时未有帖子</div>}
+        {filtered.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
       </div>
-
-      <ComposeSheet
-        open={composeOpen}
-        onClose={() => setComposeOpen(false)}
-        onSubmit={({ title, body, category }) => {
-          const now = new Date()
-          const p: Post = {
-            id: `local-${now.getTime()}`,
-            title,
-            body,
-            category,
-            style: 'facebook',
-            author: '我（本地示范）',
-            authorAvatar: '✍️',
-            likes: 0,
-            commentsCount: 0,
-            createdAt: now.toISOString(),
-            tags: ['本地发帖'],
-            coverEmoji: '📝',
-            gradient: 'linear-gradient(135deg, #0f766e, #5eead4)',
-            mediaType: 'text',
-          }
-          setLocalPosts((prev) => [p, ...prev])
-          setComposeOpen(false)
-          showToast('已发布到本机预览 · 登录后可同步（即将开放）')
-        }}
-      />
-
-      {toast && <div className="toast">{toast}</div>}
     </>
   )
 }

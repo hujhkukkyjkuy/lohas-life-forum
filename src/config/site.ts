@@ -6,7 +6,7 @@
 export const CONTACT_WHATSAPP = '85244361681'
 
 export const SITE_NAME = '康城生活圈'
-export const SITE_TAGLINE = '公开康城生活圈 · 欢迎商户试投'
+export const SITE_TAGLINE = '日出康城生活社区 · 非官方'
 export const PRIVACY_EMAIL = '' // 待填 · e.g. 'privacy@example.com'
 
 /** 預設詢價文案（WhatsApp / 複製用） */

@@ -1448,7 +1448,16 @@ Please pack out what you pack in. Keep our LOHAS waterfront clean 🌿
 ]
 
 export function getPostById(id: string): Post | undefined {
-  return posts.find((p) => p.id === id)
+  const seed = posts.find((p) => p.id === id)
+  if (seed) return seed
+  try {
+    const raw = localStorage.getItem('lohas-life-local-posts')
+    if (!raw) return undefined
+    const arr = JSON.parse(raw) as Post[]
+    return Array.isArray(arr) ? arr.find((p) => p.id === id) : undefined
+  } catch {
+    return undefined
+  }
 }
 
 export function getPostsByCategory(category: Category | '全部'): Post[] {

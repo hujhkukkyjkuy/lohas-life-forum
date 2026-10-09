@@ -76,7 +76,7 @@ async function getJson<T>(dataType: string): Promise<T | null> {
   }
 }
 
-export function WeatherStrip() {
+export function WeatherStrip({ compact = false }: { compact?: boolean } = {}) {
   const { m, day, w } = hkNow()
   const [wx, setWx] = useState<Wx | null>(null)
   const [failed, setFailed] = useState(false)
@@ -112,6 +112,33 @@ export function WeatherStrip() {
       dead = true
     }
   }, [])
+
+  if (compact) {
+    return (
+      <section className="wx-strip wx-compact" aria-label="今日日期及天氣">
+        <div className="wx-row">
+          <span className="wx-date">
+            {m}月{day}日 星期{WEEK[w]}
+          </span>
+          {wx?.temp && (
+            <span className="wx-now">
+              {iconEmoji(wx.icon)} {wx.temp.value}°
+              {typeof wx.rh === 'number' && <span className="wx-dim"> · 濕度 {wx.rh}%</span>}
+            </span>
+          )}
+          {!wx && !failed && <span className="wx-dim">天氣載入中…</span>}
+          {failed && (
+            <a className="wx-link" href={HKO_URL} target="_blank" rel="noopener noreferrer">
+              天文台 →
+            </a>
+          )}
+          {wx && wx.warnings.length > 0 && (
+            <span className="wx-warn">⚠️ {wx.warnings[0]}</span>
+          )}
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="wx-strip" aria-label="今日日期及天氣">

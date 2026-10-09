@@ -1,11 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { Post } from '../data/posts'
-
-const styleLabel: Record<Post['style'], string> = {
-  xiaohongshu: '小红书',
-  instagram: 'IG',
-  facebook: 'Facebook',
-}
+import { isQuestionPost, listExcerpt } from '../lib/localPosts'
 
 function formatTime(iso: string) {
   const d = new Date(iso)
@@ -18,19 +13,15 @@ function formatTime(iso: string) {
   })
 }
 
-function excerpt(body: string) {
-  return body.replace(/\s+/g, ' ').trim()
-}
-
 export function PostCard({ post }: { post: Post }) {
   const isVideo = post.mediaType === 'video'
+  const isQ = isQuestionPost(post)
+  const cta = isQ ? '睇答案 · 投票' : isVideo ? '睇短视频' : '睇全文'
   return (
-    <Link to={`/post/${post.id}`} className="card post-card">
+    <Link to={`/post/${post.id}`} className="forum-card">
       <div className="post-cover" style={{ background: post.gradient }}>
         <span className="emoji">{isVideo ? '▶️' : post.coverEmoji}</span>
-        <span className="style-pill">
-          {isVideo ? '短视频' : styleLabel[post.style]}
-        </span>
+        <span className="style-pill">{isVideo ? '短视频' : post.category}</span>
       </div>
       <div className="post-body">
         <div className="post-meta">
@@ -45,11 +36,10 @@ export function PostCard({ post }: { post: Post }) {
           {isVideo ? '🎬 ' : ''}
           {post.title}
         </h3>
-        <p className="post-excerpt">{excerpt(post.body)}</p>
+        <p className="post-excerpt">{listExcerpt(post)}</p>
         <div className="post-stats">
-          <span>♥ {post.likes}</span>
-          <span>💬 {post.commentsCount}</span>
-          {isVideo && <span>短视频 Demo</span>}
+          <span className="forum-cta">{cta} →</span>
+          <span className="stat-quiet">💬 {post.commentsCount || '留言'}</span>
         </div>
       </div>
     </Link>
