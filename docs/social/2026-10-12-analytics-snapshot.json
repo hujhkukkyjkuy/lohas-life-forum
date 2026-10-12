@@ -1,0 +1,23 @@
+{
+  "visits_total": {
+    "value": 13
+  },
+  "pv_total": {
+    "value": 14
+  },
+  "d20261012_visits": {
+    "value": 2
+  },
+  "src_fb": {
+    "value": 6
+  },
+  "src_tg": "HTTP 404",
+  "src_other": {
+    "value": 1
+  },
+  "src_wa": "HTTP 404",
+  "evt_wa_click": "HTTP 404",
+  "pv_post_p54": "HTTP 404",
+  "pv_post_p55": "HTTP 404",
+  "fetched_at": "2026-10-12T10:03:59+08:00"
+}
