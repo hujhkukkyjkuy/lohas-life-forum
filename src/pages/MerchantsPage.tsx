@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { featuredMerchants } from '../data/merchants'
 import { RATE_CARD } from '../config/site'
 import { LeadForm } from '../components/LeadForm'
@@ -7,25 +7,44 @@ import { MerchantCtaButtons } from '../components/MerchantCta'
 
 export function MerchantsPage() {
   const [toast, setToast] = useState<string | null>(null)
+  const location = useLocation()
 
   function showToast(msg: string) {
     setToast(msg)
     setTimeout(() => setToast(null), 2400)
   }
 
+  useEffect(() => {
+    const wantLead =
+      location.hash === '#lead' ||
+      new URLSearchParams(location.search).get('focus') === 'lead'
+    if (!wantLead) return
+    const t = window.setTimeout(() => {
+      document.getElementById('lead')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 80)
+    return () => window.clearTimeout(t)
+  }, [location.hash, location.search])
+
   return (
     <div className="page">
       <h2 className="section-title">商户合作</h2>
       <div className="banner-demo" style={{ margin: '0 0 12px' }}>
-        置顶推广 · 商户合作位 · 想试投一周？撳下面 CTA
+        置顶推广 · 商户合作位 · 想试投一周？撳下面留资
       </div>
 
       <div className="hero-cta mono-box">
         <h3>商户试投一周</h3>
         <p style={{ margin: '0 0 12px', fontSize: 13, color: '#64748b' }}>
           本地 Cafe、诊所、补习、市集主办——喺康城住户信息流露出。示范价 · 可议。
+          累计访客大约二十以内；首周可议／可 5 折。
         </p>
         <MerchantCtaButtons />
+        <a href="#lead" className="rates-link" onClick={(e) => {
+          e.preventDefault()
+          document.getElementById('lead')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }}>
+          直接留资（店名＋WhatsApp）→
+        </a>
         <Link to="/rates" className="rates-link">
           查看完整价目表 →
         </Link>
@@ -33,6 +52,8 @@ export function MerchantsPage() {
           点解选我们而唔系 FB／TG 群 →
         </Link>
       </div>
+
+      <LeadForm onToast={showToast} />
 
       {featuredMerchants.map((m) => (
         <div key={m.id} className="merchant-card merchant-card-boost">
@@ -69,13 +90,10 @@ export function MerchantsPage() {
         ))}
       </div>
 
-      <LeadForm onToast={showToast} />
-
       <div className="mono-box">
         <h3>路线图（未上线）</h3>
         <ul>
           <li>活动票务／团购分销</li>
-          <li>地产代理／业主 freemium 导流（日后桥接「易租」）</li>
           <li>短视频商户口播套餐（价目已列，制作见 VIDEO_PLAYBOOK）</li>
         </ul>
       </div>

@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+const SHARE_URL =
+  'https://hujhkukkyjkuy.github.io/lohas-life-forum/?notrack=1#/coop'
+
 export function MePage() {
   const [toast, setToast] = useState<string | null>(null)
 
@@ -12,6 +15,17 @@ export function MePage() {
   return (
     <div className="page">
       <h2 className="section-title">我的</h2>
+
+      <Link to="/coop" className="coop-lead-card">
+        <div className="coop-lead-icon">🏪</div>
+        <div className="coop-lead-body">
+          <strong>商户合作／试投留资</strong>
+          <p>
+            累计访客约二十以内 · 首周可议／可 5 折 · 提交即 WhatsApp 站长
+          </p>
+          <span className="coop-lead-cta">去留资 →</span>
+        </div>
+      </Link>
 
       <div className="me-hero">
         <div className="emoji">👤</div>
@@ -48,6 +62,13 @@ export function MePage() {
       <div className="mono-box ops-entry">
         <h3>商户试投（可选）</h3>
         <p className="ops-lead">公开信息流试投 · 唔似 FB 群禁广告</p>
+        <Link to="/coop" className="ops-link-card">
+          <span className="ops-icon">✍️</span>
+          <span>
+            <strong>试投留资 /coop</strong>
+            <small>提交 → WhatsApp 站长 · 分享用 ?notrack=1#/coop</small>
+          </span>
+        </Link>
         <Link to="/rates" className="ops-link-card">
           <span className="ops-icon">💰</span>
           <span>
@@ -59,7 +80,7 @@ export function MePage() {
           <span className="ops-icon">🏪</span>
           <span>
             <strong>商户页 · 留下电话</strong>
-            <small>Lead form 存 localStorage</small>
+            <small>示范位 + Lead form</small>
           </span>
         </Link>
         <Link to="/why-us" className="ops-link-card">
@@ -83,6 +104,9 @@ export function MePage() {
             <small>来源 fb／tg／xhs、每帖浏览</small>
           </span>
         </Link>
+        <p className="ops-share-hint">
+          分享链接：{SHARE_URL}
+        </p>
       </div>
 
       {toast && <div className="toast">{toast}</div>}

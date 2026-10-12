@@ -955,6 +955,58 @@ a {
   font-family: var(--font);
 }
 
+
+.lead-panel .req {
+  color: #dc2626;
+  font-size: 11px;
+  font-weight: 650;
+  margin-left: 4px;
+}
+
+/* Me · prominent coop entry */
+.coop-lead-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+  margin-bottom: 14px;
+  border-radius: var(--radius);
+  border: 1.5px solid #5eead4;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 55%, #fff 100%);
+  box-shadow: 0 6px 18px rgba(13, 159, 110, 0.12);
+  text-decoration: none;
+  color: inherit;
+}
+.coop-lead-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.coop-lead-body strong {
+  display: block;
+  font-size: 16px;
+  color: var(--brand-dark);
+  margin-bottom: 4px;
+}
+.coop-lead-body p {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.coop-lead-cta {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.ops-share-hint {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
 /* Me · ops entry */
 .ops-entry .ops-lead {
   margin: 0 0 12px;

@@ -11,6 +11,7 @@ import { MerchantsPage } from './pages/MerchantsPage'
 import { MePage } from './pages/MePage'
 import { RatesPage } from './pages/RatesPage'
 import { WhyUsPage } from './pages/WhyUsPage'
+import { CoopPage } from './pages/CoopPage'
 import type { Post } from './data/posts'
 import { upsertLocalPost } from './lib/localPosts'
 
@@ -39,6 +40,7 @@ function AppShell() {
         <Route path="/post/:id" element={<PostDetailPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/merchants" element={<MerchantsPage />} />
+        <Route path="/coop" element={<CoopPage />} />
         <Route path="/rates" element={<RatesPage />} />
         <Route path="/why-us" element={<WhyUsPage />} />
         <Route path="/me" element={<MePage />} />
