@@ -1,0 +1,29 @@
+{
+  "visits_total": {
+    "value": 41
+  },
+  "pv_total": {
+    "value": 42
+  },
+  "d20261014_visits": {
+    "value": 7
+  },
+  "d20261014_pv": {
+    "value": 7
+  },
+  "src_fb": {
+    "value": 7
+  },
+  "src_tg": "HTTP 404",
+  "src_other": {
+    "value": 1
+  },
+  "src_direct": {
+    "value": 34
+  },
+  "src_wa": "HTTP 404",
+  "evt_wa_click": "HTTP 404",
+  "pv_post_p76": "HTTP 404",
+  "pv_post_p75": "HTTP 404",
+  "fetched_at": "2026-10-14T09:55:00+08:00"
+}
