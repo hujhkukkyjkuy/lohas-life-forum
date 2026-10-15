@@ -1,25 +1,22 @@
 {
   "visits_total": {
-    "value": 49
+    "value": 55
   },
   "d20261015_visits": {
-    "value": 3
+    "value": 9
   },
   "src_fb": {
     "value": 7
   },
-  "evt_wa_click": "HTTP 404",
-  "src_tg": "HTTP 404",
+  "src_direct": {
+    "value": 48
+  },
   "src_other": {
     "value": 1
   },
-  "src_direct": {
-    "value": 42
-  },
   "pv_total": {
-    "value": 50
+    "value": 56
   },
-  "pv_post_p77": "HTTP 404",
-  "d20261015_src_fb": "HTTP 404",
-  "fetched_at": "2026-10-15T10:03:48+08:00"
+  "evt_wa_click": "HTTP 404",
+  "fetched_at": "2026-10-15T18:51:00+08:00"
 }
