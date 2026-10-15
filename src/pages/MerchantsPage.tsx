@@ -36,7 +36,7 @@ export function MerchantsPage() {
         <h3>商户试投一周</h3>
         <p style={{ margin: '0 0 12px', fontSize: 13, color: '#64748b' }}>
           本地 Cafe、诊所、补习、市集主办——喺康城住户信息流露出。示范价 · 可议。
-          累计访客大约二十以内；首周可议／可 5 折。
+          累计访客大约五十；首周可议／可 5 折。
         </p>
         <MerchantCtaButtons />
         <a href="#lead" className="rates-link" onClick={(e) => {
