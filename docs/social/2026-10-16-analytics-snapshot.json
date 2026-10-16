@@ -1,23 +1,24 @@
 {
   "visits_total": {
-    "value": 64
+    "value": 66
   },
   "d20261016_visits": {
-    "value": 7
+    "value": 9
   },
   "src_fb": {
     "value": 7
   },
   "src_tg": "HTTP 404",
   "src_direct": {
-    "value": 57
+    "value": 59
   },
   "src_other": {
     "value": 1
   },
   "pv_total": {
-    "value": 65
+    "value": 67
   },
   "evt_wa_click": "HTTP 404",
-  "fetched_at": "2026-10-16T10:02:17+08:00"
+  "fetched_at": "2026-10-16T14:36:53+0800",
+  "note": "afternoon proactive refresh; warm-lead still unsent"
 }
