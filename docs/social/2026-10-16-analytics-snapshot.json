@@ -1,0 +1,23 @@
+{
+  "visits_total": {
+    "value": 64
+  },
+  "d20261016_visits": {
+    "value": 7
+  },
+  "src_fb": {
+    "value": 7
+  },
+  "src_tg": "HTTP 404",
+  "src_direct": {
+    "value": 57
+  },
+  "src_other": {
+    "value": 1
+  },
+  "pv_total": {
+    "value": 65
+  },
+  "evt_wa_click": "HTTP 404",
+  "fetched_at": "2026-10-16T10:02:17+08:00"
+}
