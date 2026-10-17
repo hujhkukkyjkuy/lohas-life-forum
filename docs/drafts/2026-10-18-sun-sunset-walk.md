@@ -46,3 +46,7 @@ https://hujhkukkyjkuy.github.io/lohas-life-forum/#/rates
 - 不提易租／yizu
 - 不代发 WhatsApp
 - 不鼓励高危攀爬／栏河外侧打卡
+
+## 2026-10-17 08:05 HKT 天气预核（未锁定）
+- fnd 20261018（日・重陽）：早上大致多雲，有一兩陣微雨；稍後漸轉天晴乾燥；27–31°C；東風 4 級，初時高地間中 5 級；RH 60–85%；PSR 低。
+- 锁帖前仍须用当日 flw／fnd／rhrread 再核。
