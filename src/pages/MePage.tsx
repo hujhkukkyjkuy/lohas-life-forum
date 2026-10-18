@@ -21,7 +21,7 @@ export function MePage() {
         <div className="coop-lead-body">
           <strong>商户合作／试投留资</strong>
           <p>
-            累计访客约八十 · 首周可议／可 5 折 · 提交即 WhatsApp 站长
+            累计访客约九十 · 首周可议／可 5 折 · 提交即 WhatsApp 站长
           </p>
           <span className="coop-lead-cta">去留资 →</span>
         </div>

@@ -38,7 +38,7 @@ export function CoopPage() {
       </div>
 
       <div className="banner-demo" style={{ margin: '0 0 12px' }}>
-        累计访客约八十 · 首周可议／可 5 折 · 不满意可停
+        累计访客约九十 · 首周可议／可 5 折 · 不满意可停
       </div>
 
       <LeadForm onToast={showToast} />
