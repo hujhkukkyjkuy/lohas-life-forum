@@ -89,7 +89,7 @@ export function LeadForm({ onToast }: Props) {
     <div className="lead-panel" id="lead">
       <h3>商户试投留资</h3>
       <p className="lead-sub">
-        诚实讲：累计访客大约五十（站内统计）。首周试用可议／可 5
+        诚实讲：累计访客大约八十（站内统计）。首周试用可议／可 5
         折，不满意可停。提交后会打开 WhatsApp（852 4436
         1681）预填询价文案，直接打到站长；同时本机也会存一份方便你自己对照。
       </p>

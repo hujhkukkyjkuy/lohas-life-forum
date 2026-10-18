@@ -1,0 +1,24 @@
+{
+  "visits_total": {
+    "value": 82
+  },
+  "d20261018_visits": {
+    "value": 3
+  },
+  "src_fb": {
+    "value": 7
+  },
+  "src_direct": {
+    "value": 75
+  },
+  "src_other": {
+    "value": 1
+  },
+  "pv_total": {
+    "value": 83
+  },
+  "evt_wa_click": "HTTP/err HTTP Error 404: Not Found",
+  "src_tg": "HTTP/err HTTP Error 404: Not Found",
+  "fetched_at": "2026-10-18T08:12:10+0800",
+  "note": "Sunday morning periodic; src_fb still 7; visits_total 82 today 3; site copy refreshed 五十→八十"
+}
