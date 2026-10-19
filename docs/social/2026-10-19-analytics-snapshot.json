@@ -1,13 +1,15 @@
 {
-  "visits_total": { "value": 87 },
-  "d20261019_visits": "HTTP/err Key not found",
-  "d20261018_visits": { "value": 8 },
-  "src_fb": { "value": 7 },
-  "src_direct": { "value": 80 },
-  "src_other": { "value": 1 },
-  "pv_total": { "value": 88 },
+  "visits_total": {
+    "value": 89
+  },
+  "d20261019_visits": {
+    "value": 2
+  },
+  "src_fb": {
+    "value": 7
+  },
   "evt_wa_click": "HTTP/err Key not found",
   "src_tg": "HTTP/err Key not found",
-  "fetched_at": "2026-10-19T02:28:00+0800",
-  "note": "Mon early lock p81 hot-hat; visitor copy rounded to ~九十 (Abacus 87); FB still 7; today visits not started"
+  "fetched_at": "2026-10-19 09:59+0800",
+  "note": "Mon morning routine: refreshed HKO yellow fire warning + refined social image; p81 weather updated"
 }
