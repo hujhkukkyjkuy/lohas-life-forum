@@ -1,0 +1,24 @@
+{
+  "visits_total": {
+    "value": 164
+  },
+  "d20261024_visits": {
+    "value": 8
+  },
+  "src_fb": {
+    "value": 13
+  },
+  "src_direct": {
+    "value": 151
+  },
+  "src_other": {
+    "value": 1
+  },
+  "pv_total": {
+    "value": 166
+  },
+  "src_tg": "HTTP/err HTTP Error 404: Not Found",
+  "evt_wa_click": "HTTP/err HTTP Error 404: Not Found",
+  "fetched_at": "2026-10-24 18:48+0800",
+  "note": "Sat evening proactive; p86 live; Halloween FB pack delivered waiting 贴咗; src_fb 13 (+1 vs Fri eve 12); today visits 8; no bot outbound; Sunday not locked yet"
+}
