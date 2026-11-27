@@ -1,0 +1,17 @@
+{
+  "visits_total": {
+    "value": 333
+  },
+  "d20261127_visits": {
+    "value": 3
+  },
+  "src_fb": {
+    "value": 16
+  },
+  "src_tg": {
+    "value": 1
+  },
+  "evt_wa_click": 1,
+  "fetched_at": "2026-11-27 10:57+0800",
+  "note": "Fri morning routine post-deploy: p116 sunglasses tip live on main/gh-pages (0f06bb4 / d3b3a36); mall atrium 示意 art with cream and sage unbranded sunglasses; HKO mainly sunny, light winds, temps rising, 20-25C, RH 60-85 PSR low, TKO 25C HKO 23C RH 70% UV 2 low ~10:02, no warning in force; outlook sunny through weekend to early next week, Saturday very dry, Sunday windy; 易租 untouched; no FB login; no merchant WA; Abacus via /get after deploy"
+}
